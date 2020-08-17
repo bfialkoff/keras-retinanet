@@ -47,7 +47,7 @@ model = models.load_model(model_path, backbone_name='resnet50')
 
 # if the model is not converted to an inference model, use the line below
 # see: https://github.com/fizyr/keras-retinanet#converting-a-training-model-to-inference-model
-# model = models.convert_model(model)
+# model = models.convert_model.sh(model)
 
 #print(model.summary())
 

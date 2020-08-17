@@ -5,6 +5,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.idea/
 /build/
 /dist/
 /eggs/
@@ -15,6 +16,11 @@ __pycache__/
 /*.egg-info/
 .installed.cfg
 *.egg
+**/*.zip
+**/*.jpg
+**/*.txt
+
+images/*
 
 # Unit test / coverage reports
 .coverage

@@ -170,7 +170,12 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
             # use prediction model for evaluation
             evaluation = CocoEval(validation_generator, tensorboard=tensorboard_callback)
         else:
-            evaluation = Evaluate(validation_generator, tensorboard=tensorboard_callback, weighted_average=args.weighted_average)
+            if args.save_path:
+                makedirs(args.save_path)
+            evaluation = Evaluate(validation_generator, tensorboard=tensorboard_callback,
+                                  weighted_average=args.weighted_average,
+                                  max_detections=args.max_detections,
+                                  save_path=args.save_path)
         evaluation = RedirectModel(evaluation, prediction_model)
         callbacks.append(evaluation)
 
@@ -205,7 +210,7 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
     if args.evaluation and validation_generator:
         callbacks.append(keras.callbacks.EarlyStopping(
             monitor    = 'mAP',
-            patience   = 5,
+            patience   = 50,
             mode       = 'max',
             min_delta  = 0.01
         ))
@@ -431,6 +436,8 @@ def parse_args(args):
     parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=10000)
     parser.add_argument('--lr',               help='Learning rate.', type=float, default=1e-5)
     parser.add_argument('--snapshot-path',    help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default='./snapshots')
+    parser.add_argument('--max-detections',   help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default=100)
+    parser.add_argument('--eval-save-path',   help='Path to store visulizations of model predictions', default=None, dest='save_path')
     parser.add_argument('--tensorboard-dir',  help='Log directory for Tensorboard output', default='')  # default='./logs') => https://github.com/tensorflow/tensorflow/pull/34870
     parser.add_argument('--no-snapshots',     help='Disable saving snapshots.', dest='snapshots', action='store_false')
     parser.add_argument('--no-evaluation',    help='Disable per epoch evaluation.', dest='evaluation', action='store_false')
@@ -529,6 +536,7 @@ def main(args=None):
         validation_generator = None
 
     # start training
+    print(args.multiprocessing)
     return training_model.fit_generator(
         generator=train_generator,
         steps_per_epoch=args.steps,

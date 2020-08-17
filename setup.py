@@ -59,7 +59,7 @@ setuptools.setup(
             'retinanet-train=keras_retinanet.bin.train:main',
             'retinanet-evaluate=keras_retinanet.bin.evaluate:main',
             'retinanet-debug=keras_retinanet.bin.debug:main',
-            'retinanet-convert-model=keras_retinanet.bin.convert_model:main',
+            'retinanet-convert-model=keras_retinanet.bin.convert_model.sh:main',
         ],
     },
     ext_modules    = extensions,

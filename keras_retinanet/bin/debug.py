@@ -223,7 +223,7 @@ def run(generator, args, anchor_params, pyramid_levels):
                 draw_boxes(image, anchors[positive_indices], (255, 255, 0), thickness=1)
 
             # draw annotations on the image
-            if args.show_annotations:
+            if args.show_annotations or True:
                 # draw annotations in red
                 draw_annotations(image, annotations, color=(0, 0, 255), label_to_name=generator.label_to_name)
 
